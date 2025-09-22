@@ -213,17 +213,14 @@
     }
     alert('축하합니다! 모두 맞혔습니다.');
     const nick = prompt('닉네임을 입력하세요');
-    if(nick){
-      const elapsedMs = Date.now()-t0;
-      try{
-        await fetch('/api/submit',{method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({nick, time:elapsedMs})});
-        alert(`${nick}님의 기록이 서버로 전송되었습니다.`);
-      }catch(err){
-        console.error(err);
-        alert('서버 전송에 실패했습니다.');
-      }
-    }
-  });
+    if(nick){ // 기록 저장 (localStorage)
+    const record = {name: nick, seconds: elapsedSec};
+    const prev = JSON.parse(localStorage.getItem('sudokuRecords')||'[]');
+    prev.push(record);
+    localStorage.setItem('sudokuRecords', JSON.stringify(prev));
+    alert(`${nick}님의 기록이 저장되었습니다.`);
+  }
+});
 
   buildGrid();
 </script>
